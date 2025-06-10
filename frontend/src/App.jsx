@@ -5,8 +5,8 @@ import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-markup';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism.css';
-import prismLanguages from './prismLanguages';
 import './style.css'
+import Dropdown from './Components/Dropdown';
 
 
 const App = () => {
@@ -36,18 +36,10 @@ const App = () => {
 
 return (
   <>
-    <label htmlFor='lang'>Language</label>
-    <select
-      value={selectedValue}
-      onChange={handleSelectChange}
-      name='lang'
-      id='lang'>
-      <option default>Select Language</option>
-      {Object.entries(prismLanguages).map(([label, value]) => {
-        return <option value={value} key={label}>{label}</option>
-      })
-      }
-    </select>
+    <Dropdown
+      selectedValue={selectedValue}
+      handleSelectChange={handleSelectChange}
+    />
     <Editor
       className='code-input'
       value={code}
