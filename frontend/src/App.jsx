@@ -7,6 +7,7 @@ import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism.css';
 import './style.css'
 import Dropdown from './Components/Dropdown';
+import snippetService from './services/snippets'
 
 
 const App = () => {
@@ -21,9 +22,13 @@ const App = () => {
 
   const handleSave = (event) => {
     event.preventDefault()
+    snippetService.saveSnippet({
+      title,
+      code
+    })
     setTitle('')
     setCode('')
-    return console.log(7)
+    
   }
 
   return (
