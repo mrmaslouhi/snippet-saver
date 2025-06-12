@@ -14,46 +14,53 @@ const App = () => {
     `<h1>Asalamu Alaykum!</h1>`
   )
   const [selectedValue, setSelectedValue] = useState('')
-  // const [isLangLoading, setIsLangLoading] = useState(false)
-
+  const [title, setTitle] = useState('')
   const handleSelectChange = (event) => {
     return setSelectedValue(event.target.value)
   }
 
-  // useEffect(() => {
-  //   console.log('effect ran')
-  //   const langImport = async () => {
-  //     if (selectedValue) {
-  //       console.log('This is selectedValue', selectedValue, 'the value of that one', isLangLoading)
-  //       setIsLangLoading(true)
-  //       await import(/* @vite-ignore */ `prismjs/components/prism-${selectedValue}`)
-  //       setIsLangLoading(false)
-  //     }
-  //   }
-  //   langImport()
-  // }, [selectedValue])
+  const handleSave = (event) => {
+    event.preventDefault()
+    setTitle('')
+    setCode('')
+    return console.log(7)
+  }
 
+  return (
+    <>
+      <h1>Create a snippet</h1>
+      <p>This information will be displayed publicly so be careful what you share. Ensure you are not sharing sensitve information or private information.</p>
+      <form onSubmit={handleSave}>
+        <label htmlFor="title">Title</label>
+        <input
+          placeholder='Enter title'
+          name="title"
+          id="title"
+          onChange={({ target }) => setTitle(target.value)}
+          value={title}
+        />
 
-return (
-  <>
-    <Dropdown
-      selectedValue={selectedValue}
-      handleSelectChange={handleSelectChange}
-    />
-    <Editor
-      className='code-input'
-      value={code}
-      onValueChange={code => setCode(code)}
-      highlight={code => highlight(code, selectedValue ? languages[selectedValue] : languages.markup)}
-      padding={12}
-      style={{
-        fontFamily: '"Fira code", "Fira Mono", monospace',
-        fontSize: 12,
-      }}
-    />
-  </>
+        <Dropdown
+          selectedValue={selectedValue}
+          handleSelectChange={handleSelectChange}
+        />
+        <label htmlFor="editor">Code</label>
+        <Editor
+          className='code-input'
+          value={code}
+          onValueChange={code => setCode(code)}
+          highlight={code => highlight(code, selectedValue ? languages[selectedValue] : languages.markup)}
+          padding={12}
+          style={{
+            fontFamily: '"Fira code", "Fira Mono", monospace',
+            fontSize: 12,
+          }}
+        />
+        <button type='submit'>Save</button>
+      </form>
+    </>
 
-);
+  );
 }
 
 export default App
