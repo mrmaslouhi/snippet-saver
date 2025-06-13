@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import SavePage from './Components/SavePage'
 import SnippetsPage from './Components/SnippetsPage';
+import LoginPage from './Components/LoginPage';
 import snippetService from './services/snippets'
+import loginService from './services/login'
 import { 
   Routes, Route, useNavigate 
 } from 'react-router-dom'
@@ -12,6 +14,8 @@ const App = () => {
   const [selectedValue, setSelectedValue] = useState('')
   const [title, setTitle] = useState('')
   const [searchKeyword, setSearchKeyword] = useState('')
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
   const navigate = useNavigate()
   
   const handleSelectChange = event => setSelectedValue(event.target.value)
@@ -26,13 +30,22 @@ const App = () => {
     navigate('/snippets')
   }
 
+  const handleSignUp = (event) => {
+    event.preventDefault()
+    loginService.login({
+      username, password
+    })
+    navigate('/save-page')
+  }
+
   return (
     <>
       <nav>Navigation</nav>
 
       <Routes>
+        <Route path="login-page" element={<LoginPage handleSignUp={handleSignUp} username={username} password={password} setPassword={setPassword} setUsername={setUsername}  />} />
         <Route path="/save-page" element={<SavePage setTitle={setTitle} setCode={setCode} handleSelectChange={handleSelectChange} handleSave={handleSave} selectedValue={selectedValue} title={title} code={code} />} />
-          <Route path="/snippets" element={<SnippetsPage setSearchKeyword={setSearchKeyword} searchKeyword={searchKeyword} />} />
+        <Route path="/snippets" element={<SnippetsPage setSearchKeyword={setSearchKeyword} searchKeyword={searchKeyword} />} />
       </Routes>
       <footer>1447, Snippet-Saver</footer>
     </>
