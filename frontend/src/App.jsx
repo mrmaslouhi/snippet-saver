@@ -11,6 +11,7 @@ const App = () => {
   const [code, setCode] = useState(`<h1>Asalamu Alaykum!</h1>`)
   const [selectedValue, setSelectedValue] = useState('')
   const [title, setTitle] = useState('')
+  const [searchKeyword, setSearchKeyword] = useState('')
   const navigate = useNavigate()
   
   const handleSelectChange = event => setSelectedValue(event.target.value)
@@ -31,7 +32,7 @@ const App = () => {
 
       <Routes>
         <Route path="/save-page" element={<SavePage setTitle={setTitle} setCode={setCode} handleSelectChange={handleSelectChange} handleSave={handleSave} selectedValue={selectedValue} title={title} code={code} />} />
-        <Route path="/snippets" element={<SnippetsPage />} />
+          <Route path="/snippets" element={<SnippetsPage setSearchKeyword={setSearchKeyword} searchKeyword={searchKeyword} />} />
       </Routes>
       <footer>1447, Snippet-Saver</footer>
     </>
