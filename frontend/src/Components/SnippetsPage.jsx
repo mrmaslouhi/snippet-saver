@@ -23,16 +23,17 @@ const SnippetsPage = ({ searchKeyword, setSearchKeyword }) => {
                 snippets.map(snippet => 
                     <div key={snippet.id} style={{ padding: 5, border: 1, borderStyle: 'solid', borderColor: 'black', fontFamily: 'monospace' }} className="snippet">
                         {snippet.title}
+                        <br />
                         {snippet.code}
                     </div>
                 ) : 
                 snippets.map(snippet => snippet.code.toLowerCase().includes(searchKeyword.toLowerCase()) ? 
-            <div key={snippet.id}>
-                {snippet.title}
-                <br />
-                <hr />
-                {snippet.code}
-            </div> : '')}
+                    <div key={snippet.id} style={{ padding: 5, border: 1, borderStyle: 'solid', borderColor: 'black', fontFamily: 'monospace' }} className="snippet">
+                        {snippet.title}
+                        <br />
+                        {snippet.code}
+                    </div> 
+                    : '')}
             </div>
         </>
     )
