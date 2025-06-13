@@ -1,4 +1,4 @@
-const LoginPage = ({ handleSignUp, username, setUsername, password, setPassword }) => {
+const SignUpPage = ({ handleSignUp, username, setUsername, password, setPassword }) => {
     return (
         <form onSubmit={handleSignUp}>
             <label htmlFor="username">Username</label>
@@ -17,4 +17,4 @@ const LoginPage = ({ handleSignUp, username, setUsername, password, setPassword 
     )
 }
 
-export default LoginPage
+export default SignUpPage
