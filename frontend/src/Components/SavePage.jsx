@@ -5,9 +5,8 @@ import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-markup';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism.css';
-import { Link } from 'react-router-dom'
 
-const SavePage = ({ code, title, selectedValue, handleSelectChange, handleSave}) => {
+const SavePage = ({ code, setCode, title, setTitle, selectedValue, handleSelectChange, handleSave }) => {
   return (
     <>
       <h1>Create a snippet</h1>
@@ -20,6 +19,7 @@ const SavePage = ({ code, title, selectedValue, handleSelectChange, handleSave})
           id="title"
           onChange={({ target }) => setTitle(target.value)}
           value={title}
+          required
         />
 
         <Dropdown
@@ -37,8 +37,9 @@ const SavePage = ({ code, title, selectedValue, handleSelectChange, handleSave})
             fontFamily: '"Fira code", "Fira Mono", monospace',
             fontSize: 12,
           }}
+          required
         />
-        <Link to="/snippets"><button type='submit'>Save</button></Link>
+        <button type='submit'>Save</button>
       </form>
     </>
   )
