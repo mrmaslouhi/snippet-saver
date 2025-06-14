@@ -5,8 +5,9 @@ import SignUpPage from './Components/SignUpPage';
 import LoginPage from './Components/LoginPage'
 import snippetService from './services/snippets'
 import signupService from './services/signup'
+import loginService from './services/login'
 import { 
-  Routes, Route, useNavigate 
+  Routes, Route, useNavigate, Navigate
 } from 'react-router-dom'
 import './style.css';
 
@@ -17,18 +18,18 @@ const App = () => {
   const [searchKeyword, setSearchKeyword] = useState('')
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
-  const [user, setUser] = useState('Real Value')
+  const [user, setUser] = useState(null)
   const navigate = useNavigate()
 
-  useEffect(() => {
-    const loggedUserJSON = window.localStorage.getItem('loggedUser')
-    if (loggedUserJSON) {
-      const user = JSON.parse(loggedUserJSON)
-      setUser(user)
-      console.log(user)
-      snippetService.setToken(user.token)
-    }
-  }, [])
+  // useEffect(() => {
+  //   const loggedUserJSON = window.localStorage.getItem('loggedUser')
+  //   if (loggedUserJSON) {
+  //     const user = JSON.parse(loggedUserJSON)
+  //     setUser(user)
+  //     console.log(user)
+  //     snippetService.setToken(user.token)
+  //   }
+  // }, [])
   
   const handleSelectChange = event => setSelectedValue(event.target.value)
 
@@ -42,30 +43,37 @@ const App = () => {
     navigate('/snippets')
   }
 
-  const handleSignUp = async (event) => {
+  const handleLogin = async (event) => {
     event.preventDefault()
-    const user = await signupService.signup({
-      username, password
-    })
-    window.localStorage.setItem(
-      'loggedUser', JSON.stringify(user)
-    )
+    try {
+      const user = await loginService.login({
+        username, password
+      })
+      snippetService.setToken(user.token)
+      setUser(user)
+      setUsername('')
+      setPassword('')
+      navigate('/save-page')
+    }
+    catch (error) {
+      console.error('Login fail',error)
+    }
 
-    snippetService.setToken(user.token)
-    setUser(user)
-    setUsername('')
-    setPassword('')
-    navigate('/save-page')
+    // window.localStorage.setItem(
+    //   'loggedUser', JSON.stringify(user)
+    // )
   }
+
+  const handleSignUp = () => console.log('react')
 
   return (
     <>
       <nav>Navigation</nav>
       <Routes>
-        <Route path="signup-page" element={<SignUpPage user={user} handleSignUp={handleSignUp} username={username} password={password} setPassword={setPassword} setUsername={setUsername}  />} />
-        <Route path="/save-page" element={<SavePage user={user} setTitle={setTitle} setCode={setCode} handleSelectChange={handleSelectChange} handleSave={handleSave} selectedValue={selectedValue} title={title} code={code} />} />
-        <Route path="/snippets" element={<SnippetsPage setSearchKeyword={setSearchKeyword} searchKeyword={searchKeyword} />} />
-        <Route path="/login-page" element={<LoginPage user={user} handleSignUp={handleSignUp} username={username} password={password} setPassword={setPassword} setUsername={setUsername}  />} />
+        <Route path="signup-page" element={!user ? <SignUpPage user={user} handleSignUp={handleSignUp} username={username} password={password} setPassword={setPassword} setUsername={setUsername}  /> : <Navigate replace to={'/save-page'} />} />
+        <Route path="/save-page" element={user ? <SavePage user={user} setTitle={setTitle} setCode={setCode} handleSelectChange={handleSelectChange} handleSave={handleSave} selectedValue={selectedValue} title={title} code={code} /> : <Navigate replace to={"/login-page"} />} />
+        <Route path="/snippets" element={user ? <SnippetsPage setSearchKeyword={setSearchKeyword} searchKeyword={searchKeyword} /> : <Navigate replace to={"/login-page"} />} />
+        <Route path="/login-page" element={!user ?  <LoginPage user={user} handleLogin={handleLogin} username={username} password={password} setPassword={setPassword} setUsername={setUsername}/> : <Navigate replace to={'/save-page'} />} />
       </Routes>
       <footer>1447, Snippet-Saver</footer>
     </>

@@ -73,8 +73,9 @@ app.post('/login', async (req, res) => {
         username: user.username,
         id: user._id
     }
-
+    
     const token = jwt.sign(userWorthyOfToken, process.env.SECRET)
+    console.log('Logged in successfully')
     res.status(200)
     .send({ token, username: user.username})
 })
