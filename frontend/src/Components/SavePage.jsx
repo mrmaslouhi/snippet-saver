@@ -5,9 +5,12 @@ import 'prismjs/components/prism-clike';
 import 'prismjs/components/prism-markup';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism.css';
+import { useNavigate } from 'react-router-dom'
 
-const SavePage = ({ code, setCode, title, setTitle, selectedValue, handleSelectChange, handleSave }) => {
-  return (
+const SavePage = ({ user, code, setCode, title, setTitle, selectedValue, handleSelectChange, handleSave }) => {
+  const navigate = useNavigate()
+  {user === null ? navigate('/login-page') :
+  (
     <>
       <h1>Create a snippet</h1>
       <p>This information will be displayed publicly so be careful what you share. Ensure you are not sharing sensitve information or private information.</p>
@@ -42,7 +45,9 @@ const SavePage = ({ code, setCode, title, setTitle, selectedValue, handleSelectC
         <button type='submit'>Save</button>
       </form>
     </>
-  )
+    )
+  }
+  
 }
 
 export default SavePage
