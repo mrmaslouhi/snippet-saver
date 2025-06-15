@@ -7,7 +7,6 @@ import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism.css';
 
 const SavePage = ({ handleLogout, code, setCode, title, setTitle, selectedValue, handleSelectChange, handleSave }) => {
-  console.log('savepage rendered!')
   return (
     <>
       <p>Log out</p>

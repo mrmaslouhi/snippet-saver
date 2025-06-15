@@ -20,6 +20,16 @@ app.get('/snippets', async (req, res) => {
     res.json(snippets)
 })
 
+app.get('/users/:id', async (req, res) => {
+    const user = await User.findById(req.params.id)
+        .populate('snippets', { title: 1, code: 1 })
+    if (user) {
+        res.json(user)
+    } else {
+        res.status(404).end()
+    }
+})
+
 app.post('/snippets', async (req, res) => {
         const authorization = req.get('authorization')
     if (authorization && authorization.startsWith('Bearer ')) {
@@ -43,7 +53,7 @@ app.post('/snippets', async (req, res) => {
     })
 
     console.log('Saved successfully')
-    const savedSnippet = await snippet.save() 
+    const savedSnippet = await snippet.save()
     user.snippets = user.snippets.concat(savedSnippet._id)
     await user.save()
     res.status(200).json(savedSnippet)
@@ -71,11 +81,11 @@ app.post('/users', async (req, res) => {
     const token = jwt.sign(userWorthyOfToken, process.env.SECRET)
     console.log('Signed up successfully, this is user', user)
     res.status(200)
-    .send({ token, username: user.username})
+    .send({ token, ...userWorthyOfToken})
 })
 
 app.get('/users', async (req, res) => {
-    const users = await User.find({}).populate('snippets', { title: 1, code: 1})
+    const users = await User.find({}).populate('snippets', { title: 1, code: 1 })
     res.status(200).json(users)
 })
 
@@ -101,7 +111,7 @@ app.post('/login', async (req, res) => {
     const token = jwt.sign(userWorthyOfToken, process.env.SECRET)
     console.log('Logged in successfully, this is user', user)
     res.status(200)
-    .send({ token, username: user.username})
+    .send({ token, ...userWorthyOfToken})
 })
 
 

@@ -6,4 +6,9 @@ const signup = async credentials => {
     return res.data
 }
 
-export default { signup }
+const getSnippetsByUserId = async id => {
+    const req = await axios.get(`${baseUrl}/${id}`)
+    return req.data
+}
+
+export default { signup, getSnippetsByUserId }

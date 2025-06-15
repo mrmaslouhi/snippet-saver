@@ -1,18 +1,15 @@
 import { useState, useEffect } from 'react'
-import snippetService from '../services/snippets'
+import signupService from '../services/signup' // Ghayr hadha mn ba3do inshaAllah
 
 const SnippetsPage = ({ user, searchKeyword, setSearchKeyword }) => {
-    console.log('snippetpage rendered!')
-    console.log('this is user', user)
     const [snippets, setSnippets] = useState([])
     useEffect(() => {
         const getSnippets = async () => {
-            const data = await snippetService.getAllSnippets()
-            setSnippets(data)
+            const data = await signupService.getSnippetsByUserId(user.id)
+            setSnippets(data.snippets)
         } // AI Code
         getSnippets()
     }, [])
-
     return (
         <>
             <h1>Welcome, {user.username}</h1>
