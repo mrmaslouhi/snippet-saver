@@ -1,5 +1,7 @@
-const LoginPage = ({ user, username, setUsername, password, setPassword, handleLogin }) => {
-    console.log('rendered component')
+import { Link } from 'react-router-dom'
+
+const LoginPage = ({ username, setUsername, password, setPassword, handleLogin }) => {
+    console.log('loginpage rendered!')
     return (
       <>
         <h1>Log in to your account</h1>
@@ -17,6 +19,8 @@ const LoginPage = ({ user, username, setUsername, password, setPassword, handleL
             required />
           <button type="submit">Log in</button>
         </form>
+        <p>Don't have an account?</p>
+        <Link to="/signup-page">Sign up</Link>
       </>
     )
 }

@@ -6,9 +6,12 @@ import 'prismjs/components/prism-markup';
 import 'prismjs/components/prism-javascript';
 import 'prismjs/themes/prism.css';
 
-const SavePage = ({ user, code, setCode, title, setTitle, selectedValue, handleSelectChange, handleSave }) => {
+const SavePage = ({ handleLogout, code, setCode, title, setTitle, selectedValue, handleSelectChange, handleSave }) => {
+  console.log('savepage rendered!')
   return (
     <>
+      <p>Log out</p>
+      <button onClick={handleLogout}>Log out</button>
       <h1>Create a snippet</h1>
       <p>This information will be displayed publicly so be careful what you share. Ensure you are not sharing sensitve information or private information.</p>
       <form onSubmit={handleSave}>

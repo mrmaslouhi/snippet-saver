@@ -21,15 +21,18 @@ const App = () => {
   const [user, setUser] = useState(null)
   const navigate = useNavigate()
 
-  // useEffect(() => {
-  //   const loggedUserJSON = window.localStorage.getItem('loggedUser')
-  //   if (loggedUserJSON) {
-  //     const user = JSON.parse(loggedUserJSON)
-  //     setUser(user)
-  //     console.log(user)
-  //     snippetService.setToken(user.token)
-  //   }
-  // }, [])
+  useEffect(() => {
+    const loggedUserJSON = window.localStorage.getItem('loggedUser')
+    if (loggedUserJSON) {
+      try {
+      const user = JSON.parse(loggedUserJSON)
+      setUser(user)
+      snippetService.setToken(user.token)
+      } catch (error) {
+        console.log('An error happend while fetching user', error)
+      }
+    }
+  }, [])
   
   const handleSelectChange = event => setSelectedValue(event.target.value)
 
@@ -51,6 +54,9 @@ const App = () => {
       })
       snippetService.setToken(user.token)
       setUser(user)
+      window.localStorage.setItem(
+      'loggedUser', JSON.stringify(user)
+    )
       setUsername('')
       setPassword('')
       navigate('/save-page')
@@ -58,10 +64,12 @@ const App = () => {
     catch (error) {
       console.error('Login fail',error)
     }
+  }
 
-    // window.localStorage.setItem(
-    //   'loggedUser', JSON.stringify(user)
-    // )
+  const handleLogout = () => {
+    window.localStorage.removeItem('loggedUser')
+    setUser(null)
+    navigate('/login-page')
   }
 
   const handleSignUp = () => console.log('react')
@@ -71,8 +79,8 @@ const App = () => {
       <nav>Navigation</nav>
       <Routes>
         <Route path="signup-page" element={!user ? <SignUpPage user={user} handleSignUp={handleSignUp} username={username} password={password} setPassword={setPassword} setUsername={setUsername}  /> : <Navigate replace to={'/save-page'} />} />
-        <Route path="/save-page" element={user ? <SavePage user={user} setTitle={setTitle} setCode={setCode} handleSelectChange={handleSelectChange} handleSave={handleSave} selectedValue={selectedValue} title={title} code={code} /> : <Navigate replace to={"/login-page"} />} />
-        <Route path="/snippets" element={user ? <SnippetsPage setSearchKeyword={setSearchKeyword} searchKeyword={searchKeyword} /> : <Navigate replace to={"/login-page"} />} />
+        <Route path="/snippets" element={user ? <SnippetsPage user={user} setSearchKeyword={setSearchKeyword} searchKeyword={searchKeyword} /> : <Navigate replace to={"/login-page"} />} />
+        <Route path="/save-page" element={user ? <SavePage handleLogout={handleLogout} user={user} setTitle={setTitle} setCode={setCode} handleSelectChange={handleSelectChange} handleSave={handleSave} selectedValue={selectedValue} title={title} code={code} /> : <Navigate replace to={"/login-page"} />} />
         <Route path="/login-page" element={!user ?  <LoginPage user={user} handleLogin={handleLogin} username={username} password={password} setPassword={setPassword} setUsername={setUsername}/> : <Navigate replace to={'/save-page'} />} />
       </Routes>
       <footer>1447, Snippet-Saver</footer>

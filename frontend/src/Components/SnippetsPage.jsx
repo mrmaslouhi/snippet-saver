@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import snippetService from '../services/snippets'
 
-const SnippetsPage = ({ searchKeyword, setSearchKeyword }) => {
+const SnippetsPage = ({ user, searchKeyword, setSearchKeyword }) => {
+    console.log('snippetpage rendered!')
+    console.log('this is user', user)
     const [snippets, setSnippets] = useState([])
     useEffect(() => {
         const getSnippets = async () => {
@@ -13,7 +15,7 @@ const SnippetsPage = ({ searchKeyword, setSearchKeyword }) => {
 
     return (
         <>
-            <h1>Welcome, User</h1>
+            <h1>Welcome, {user.username}</h1>
             <input type="text"
              placeholder="Search Your Snippets"
              onChange={({ target }) => setSearchKeyword(target.value)} />

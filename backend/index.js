@@ -16,7 +16,7 @@ app.use(cors())
 app.use(express.json())
 
 app.get('/snippets', async (req, res) => {
-    const snippets = await Snippet.find({})
+    const snippets = await Snippet.find({}).populate('user', { username: 1})
     res.json(snippets)
 })
 
