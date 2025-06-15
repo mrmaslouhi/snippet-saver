@@ -72,7 +72,15 @@ const App = () => {
     navigate('/login-page')
   }
 
-  const handleSignUp = () => console.log('react')
+  const handleSignUp =  (event) => {
+    event.preventDefault()
+    signupService.signup({
+      username, password
+    })
+    setUsername('')
+    setPassword('')
+    navigate('/save-page')
+  }
 
   return (
     <>
