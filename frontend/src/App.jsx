@@ -72,11 +72,17 @@ const App = () => {
     navigate('/login-page')
   }
 
-  const handleSignUp =  (event) => {
+  const handleSignUp = async (event) => {
     event.preventDefault()
-    signupService.signup({
+    const user = await signupService.signup({
       username, password
     })
+    console.log('this is user in signup function', user)
+    snippetService.setToken(user.token)
+    setUser(user)
+    window.localStorage.setItem(
+    'loggedUser', JSON.stringify(user)
+  )
     setUsername('')
     setPassword('')
     navigate('/save-page')

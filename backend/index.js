@@ -45,9 +45,16 @@ app.post('/users', async (req, res) => {
         username, passwordHash
     })
 
-    const savedUser = await user.save()
-    console.log('posted User')
-    res.status(200).json(savedUser)
+    await user.save()
+    const userWorthyOfToken = {
+        username: user.username,
+        id: user._id
+    }
+    
+    const token = jwt.sign(userWorthyOfToken, process.env.SECRET)
+    console.log('Signed up successfully, this is user', user)
+    res.status(200)
+    .send({ token, username: user.username})
 })
 
 app.get('/users', async (req, res) => {
@@ -75,7 +82,7 @@ app.post('/login', async (req, res) => {
     }
     
     const token = jwt.sign(userWorthyOfToken, process.env.SECRET)
-    console.log('Logged in successfully')
+    console.log('Logged in successfully, this is user', user)
     res.status(200)
     .send({ token, username: user.username})
 })
