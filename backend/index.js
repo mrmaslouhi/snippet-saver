@@ -21,14 +21,31 @@ app.get('/snippets', async (req, res) => {
 })
 
 app.post('/snippets', async (req, res) => {
+        const authorization = req.get('authorization')
+    if (authorization && authorization.startsWith('Bearer ')) {
+        req.token = authorization.replace('Bearer ', '')
+    } else {
+        req.token = null
+    }
+
+    try {
+        const decodedToken = jwt.verify(req.token, process.env.SECRET)
+        req.decodedToken = decodedToken
+    } catch (error) {
+        req.decodedToken = null
+    }
     const body = req.body
+    const user = await User.findById(req.decodedToken.id)
     const snippet = new Snippet({
         title: body.title,
-        code: body.code
+        code: body.code,
+        user: user.id
     })
 
     console.log('Saved successfully')
     const savedSnippet = await snippet.save() 
+    user.snippets = user.snippets.concat(savedSnippet._id)
+    await user.save()
     res.status(200).json(savedSnippet)
 })
 
